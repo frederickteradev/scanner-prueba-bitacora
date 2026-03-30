@@ -2,36 +2,41 @@ const html5QrCode = new Html5Qrcode("reader", {
     formatsToSupport: [ 
         Html5QrcodeSupportedFormats.CODE_128,
         Html5QrcodeSupportedFormats.EAN_13,
-        Html5QrcodeSupportedFormats.EAN_8
+        Html5QrcodeSupportedFormats.EAN_8,
+        Html5QrcodeSupportedFormats.UPC_A
     ] 
 });
 
 const resultText = document.getElementById('scanned-result');
 const resetBtn = document.getElementById('reset-btn');
-const laser = document.querySelector('.scanner-laser');
+const beep = document.getElementById('beep-sound');
 
 function startScanner() {
-    laser.style.display = "block";
     html5QrCode.start(
         { facingMode: "environment" }, 
-        { fps: 20, qrbox: { width: 300, height: 150 } },
+        { fps: 15, qrbox: { width: 300, height: 160 } },
         (decodedText) => {
-            resultText.innerText = decodedText;
-            resultText.parentElement.style.borderColor = "var(--success)";
-            resultText.style.color = "var(--success)";
+            // Reproducir sonido de escaneo
+            beep.play().catch(e => console.log("Audio interactivo requerido"));
             
-            laser.style.display = "none";
+            // Mostrar resultado
+            resultText.innerText = decodedText;
+            
+            // Detener y mostrar botón de reinicio
             html5QrCode.stop();
             resetBtn.classList.remove('hidden');
-        }
-    ).catch(err => console.error("Error:", err));
+        },
+        (errorMessage) => { /* Silencioso para mejor performance */ }
+    ).catch(err => {
+        resultText.innerText = "Error: Acceso a cámara denegado.";
+    });
 }
 
 resetBtn.addEventListener('click', () => {
     resetBtn.classList.add('hidden');
-    resultText.innerText = "Esperando lectura...";
-    resultText.style.color = "inherit";
+    resultText.innerText = "Esperando entrada...";
     startScanner();
 });
 
+// Iniciamos la cámara al cargar la web
 startScanner();

@@ -1,112 +1,153 @@
 :root {
-    --primary: #0f172a;
-    --accent: #0ea5e9;
-    --success: #10b981;
-    --text-main: #1e293b;
-    --glass: rgba(255, 255, 255, 0.9);
+    --bg-main: #0a0a0c;
+    --card-bg: #141417;
+    --border: #27272a;
+    --text-dim: #a1a1aa;
+    --text-bright: #f4f4f5;
+    --accent: #06b6d4; /* Cian técnico */
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+    background-color: var(--bg-main);
+    color: var(--text-bright);
+    font-family: 'Inter', -apple-system, sans-serif;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    color: var(--text-main);
 }
 
-.glass-container {
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    padding: 2.5rem 1.5rem;
-    border-radius: 28px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.3);
-}
-
-.logo-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-h1 { font-size: 1.5rem; margin: 0; color: var(--primary); letter-spacing: -0.5px; }
-.highlight { color: var(--accent); }
-
-#reader-wrapper {
-    position: relative;
-    margin: 25px 0;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 4px solid var(--primary);
-    box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
-}
-
-/* Efecto Láser Animado */
-.scanner-laser {
-    position: absolute;
-    top: 0;
-    left: 0;
+.main-layout {
     width: 100%;
-    height: 3px;
+    max-width: 440px;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.icon-brand { color: var(--accent); width: 24px; height: 24px; }
+
+.status-badge {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: rgba(6, 182, 212, 0.1);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+
+h2 { font-size: 20px; font-weight: 600; margin: 0; }
+header p { font-size: 13px; color: var(--text-dim); margin: 8px 0 0 0; line-height: 1.5; }
+
+/* Scanner Styling */
+.scan-area {
+    position: relative;
+    margin: 32px 0;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+}
+
+#reader { width: 100% !important; border: none !important; }
+#reader video { object-fit: cover !important; }
+
+.scanner-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.corner-marker { position: absolute; width: 15px; height: 15px; border: 2px solid var(--accent); }
+.top-left { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
+.top-right { top: 20px; right: 20px; border-left: 0; border-bottom: 0; }
+.bottom-left { bottom: 20px; left: 20px; border-right: 0; border-top: 0; }
+.bottom-right { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
+
+.laser-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
     background: var(--accent);
     box-shadow: 0 0 15px var(--accent);
-    z-index: 10;
-    animation: scan 2s infinite ease-in-out;
+    animation: scanMove 3s infinite linear;
 }
 
-@keyframes scan {
-    0%, 100% { top: 5%; }
-    50% { top: 95%; }
+@keyframes scanMove {
+    0% { top: 10%; opacity: 0; }
+    50% { opacity: 1; }
+    100% { top: 90%; opacity: 0; }
 }
 
-.result-card {
-    background: #f8fafc;
-    padding: 1.2rem;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-    transition: all 0.3s ease;
+/* Result Section */
+.input-group {
+    background: #1c1c1f;
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 12px;
 }
 
-.label { 
-    font-size: 0.7rem; 
-    font-weight: 800; 
-    color: #64748b; 
-    display: block; 
-    margin-bottom: 5px;
-    letter-spacing: 1px;
-}
+.input-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.input-icon { width: 14px; color: var(--text-dim); }
+.input-label { font-size: 11px; color: var(--text-dim); font-weight: 600; text-transform: uppercase; }
 
-#scanned-result { 
-    font-family: 'Courier New', monospace; 
-    font-size: 1.2rem; 
-    font-weight: bold; 
-    margin: 0;
-}
+#scanned-result { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 16px; color: var(--accent); }
 
 .btn-primary {
-    margin-top: 1.5rem;
+    margin-top: 16px;
     width: 100%;
-    padding: 12px;
-    background: var(--primary);
-    color: white;
+    padding: 14px;
+    background: var(--accent);
+    color: #000;
     border: none;
-    border-radius: 12px;
-    font-weight: 600;
+    border-radius: 10px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
-    transition: transform 0.2s;
 }
 
-.btn-primary:active { transform: scale(0.98); }
-
-footer {
-    margin-top: 2rem;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 1rem;
-    font-size: 0.85rem;
-    color: #64748b;
+/* Footer */
+.credits {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
 }
 
-.brand { color: var(--accent); font-weight: bold; }
+.credits-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.credits p { font-size: 12px; color: var(--text-dim); margin: 0; }
+.teradev-link {
+    color: var(--text-bright);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .hidden { display: none; }
